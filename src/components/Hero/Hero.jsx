@@ -66,7 +66,7 @@ function CoachPanel() {
       {/* Datos de impacto */}
       <HStack
         spacing={{ base: 4, md: 4 }}
-        mt={{ base: 3, md: 5 }}
+        mt={{ base: 3, md: 2 }}
         divider={<Box w="1px" h="30px" bg="brand.linea" border="none" />}
       >
         {coachData.impact.map((item) => (
@@ -255,7 +255,7 @@ export default function Hero() {
         <Box
           className="player-info"
           position="absolute"
-          bottom={{ base: '37%', lg: '18%' }}
+          bottom={{ base: '37%', lg: '16%' }}
           left={{ base: '5%', lg: '39%' }}
           zIndex={15}
         >
