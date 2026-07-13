@@ -1,0 +1,19 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Estructura legacy (landing original de cainfara): shields/{archivo}
+    // Se mantiene intacta para no romper el sitio ya en producción.
+    match /shields/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Estructura nueva multi-jugador: players/{slug}/shields/{archivo}
+    match /players/{slug}/shields/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
