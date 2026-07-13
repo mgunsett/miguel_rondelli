@@ -65,7 +65,7 @@ function CoachPanel() {
 
       {/* Datos de impacto */}
       <HStack
-        spacing={{ base: 4, md: 6 }}
+        spacing={{ base: 4, md: 4 }}
         mt={{ base: 3, md: 5 }}
         divider={<Box w="1px" h="30px" bg="brand.linea" border="none" />}
       >
@@ -256,7 +256,7 @@ export default function Hero() {
           className="player-info"
           position="absolute"
           bottom={{ base: '37%', lg: '18%' }}
-          left={{ base: '5%', lg: '35%' }}
+          left={{ base: '5%', lg: '39%' }}
           zIndex={15}
         >
           <CoachPanel />

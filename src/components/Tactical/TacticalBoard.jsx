@@ -5,20 +5,24 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Posiciones base del 4-2-3-1 (cancha vertical, ataque hacia arriba)
+// Posiciones base del 4-2-3-1 (cancha vertical, ataque hacia arriba).
+// pressY: posición adelantada en presión alta — cada línea queda por debajo de la anterior.
 const PLAYERS = [
-  { n: 1,  x: 180, y: 482 }, // GK
-  { n: 4,  x: 305, y: 402 }, // RB
-  { n: 2,  x: 225, y: 414 }, // CB
-  { n: 6,  x: 135, y: 414 }, // CB
-  { n: 3,  x: 55,  y: 402 }, // LB
-  { n: 5,  x: 230, y: 330 }, // DM
-  { n: 8,  x: 130, y: 330 }, // DM
-  { n: 7,  x: 300, y: 236 }, // AM derecha
-  { n: 10, x: 180, y: 222 }, // AM centro
-  { n: 11, x: 60,  y: 236 }, // AM izquierda
-  { n: 9,  x: 180, y: 128 }, // FW
+  { n: 1,  x: 180, y: 482 },               // GK (único que no presiona)
+  { n: 4,  x: 305, y: 402, pressY: 300 },  // RB
+  { n: 2,  x: 225, y: 414, pressY: 314 },  // CB
+  { n: 6,  x: 135, y: 414, pressY: 314 },  // CB
+  { n: 3,  x: 55,  y: 402, pressY: 300 },  // LB
+  { n: 5,  x: 230, y: 330, pressY: 246 },  // DM
+  { n: 8,  x: 130, y: 330, pressY: 246 },  // DM
+  { n: 7,  x: 300, y: 236, pressY: 146 },  // AM derecha
+  { n: 10, x: 180, y: 222, pressY: 188 },  // AM centro
+  { n: 11, x: 60,  y: 236, pressY: 146 },  // AM izquierda
+  { n: 9,  x: 180, y: 128, pressY: 96 },   // FW
 ]
+
+// Oleadas de presión (índices de PLAYERS): 9 → 11/7 → 10 → 8/5 → defensa
+const PRESS_WAVES = [[10], [9, 7], [8], [6, 5], [4, 3, 2, 1]]
 
 // Circuito de pases (índices de PLAYERS): arquero → central → pivote → enganche → 9
 const PASS_ROUTE = [0, 3, 6, 8, 10]
@@ -69,7 +73,12 @@ export function TacticalBoard({ mode = 'estructura' }) {
         // Sin loops ni dibujado: estado final estático del modo activo
         if (mode === 'estructura') gsap.set(lineRefs.current, { opacity: 0.5 })
         if (mode === 'posesion')   gsap.set(passRef.current, { opacity: 0.8, strokeDashoffset: 0 })
-        if (mode === 'presion')    gsap.set(zoneRef.current, { opacity: 0.5 })
+        if (mode === 'presion') {
+          gsap.set(zoneRef.current, { opacity: 0.5 })
+          dotRefs.current.forEach((el, i) => {
+            if (PLAYERS[i].pressY) gsap.set(el, { y: PLAYERS[i].pressY })
+          })
+        }
         if (mode === 'juveniles') {
           YOUTH_IDX.forEach((i) =>
             gsap.set(dotRefs.current[i]?.querySelector('circle'), { fill: dorado, stroke: bone }))
@@ -116,10 +125,17 @@ export function TacticalBoard({ mode = 'estructura' }) {
       }
 
       if (mode === 'presion') {
-        // El bloque sube: mediocampo y delantera adelantan posición
-        tl.to(dotRefs.current.slice(5), { y: '-=34', duration: 0.7, ease: 'power2.out' }, '-=0.1')
-        tl.to(dotRefs.current.slice(1, 5), { y: '-=22', duration: 0.7, ease: 'power2.out' }, '<')
-        tl.to(zoneRef.current, { opacity: 0.5, duration: 0.5 }, '<')
+        // Presión alta en oleadas: cada línea adelanta y queda por debajo de la anterior
+        tl.to(zoneRef.current, { opacity: 0.5, duration: 0.5 }, '-=0.1')
+        PRESS_WAVES.forEach((wave, k) => {
+          wave.forEach((idx, j) => {
+            tl.to(
+              dotRefs.current[idx],
+              { y: PLAYERS[idx].pressY, duration: 0.55, ease: 'power2.out' },
+              j > 0 || k === 0 ? '<' : '-=0.35'
+            )
+          })
+        })
         arrowRefs.current.forEach((arrow) => {
           const len = arrow.getTotalLength()
           gsap.set(arrow, { strokeDasharray: len, strokeDashoffset: len, opacity: 0.9 })

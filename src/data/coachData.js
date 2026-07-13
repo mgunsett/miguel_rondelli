@@ -9,6 +9,7 @@ import argentina from '@assets/argentina.webp'
 // Escudos disponibles (faltan: escudo_melgar / escudo_cusco / escudo_emelec / escudo_velez)
 // Al agregarlos en assets/escudos/, importarlos y completar el campo `logo` de cada club.
 import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
+import escudoMelgar from '@assets/escudo_melgar.webp'
 
 // ⚠️ GALERÍA PLACEHOLDER — reemplazar por fotos en banca, charlas técnicas,
 //    celebraciones de equipo y ruedas de prensa.
@@ -48,7 +49,7 @@ export const coachData = {
   birthDate: '24 / 01 / 1978',
   birthPlace: 'Buenos Aires, Argentina',
   currentClub: 'FBC Melgar',
-  logoCurrentClub: null, // ⚠️ agregar assets/escudos/escudo_melgar.webp
+  logoCurrentClub: escudoMelgar, // ⚠️ agregar assets/escudos/escudo_melgar.webp
   formation: '4-2-3-1',
   image: coachHero,
 
@@ -66,7 +67,7 @@ export const coachData = {
       id: 'posesion',
       board: 'posesion',
       title: 'Protagonismo con la pelota',
-      text: 'Equipos que toman la iniciativa: salida limpia desde el fondo, circulación rápida y ataque posicional. Sus planteles son reconocidos por ser los que mejor juegan del torneo.',
+      text: 'Equipos que toman iniciativa: salida limpia desde el fondo, circulación rápida y ataque posicional. Generando un 70% de posesión promedio en cada llegada.',
       tag: 'Posesión con propósito',
     },
     {
