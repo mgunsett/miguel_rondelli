@@ -10,6 +10,9 @@ import argentina from '@assets/argentina.webp'
 // Al agregarlos en assets/escudos/, importarlos y completar el campo `logo` de cada club.
 import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
 import escudoMelgar from '@assets/escudo_melgar.webp'
+import escudoCusco from '@assets/escudos/escudo_cusco.webp'
+import escudoEmelec from '@assets/escudos/escudo_emelec.webp'
+import escudoVelez from '@assets/escudos/escudo_velez.webp'
 
 // ⚠️ GALERÍA PLACEHOLDER — reemplazar por fotos en banca, charlas técnicas,
 //    celebraciones de equipo y ruedas de prensa.
@@ -85,11 +88,12 @@ export const coachData = {
       tag: 'Sistema adaptable',
     },
     {
-      id: 'formacion',
-      board: 'juveniles',
-      title: 'Desarrollo de jóvenes',
-      text: 'Más de una década formando futbolistas en las inferiores de Vélez Sarsfield antes de saltar a primera. Cada proyecto suyo integra juveniles al once titular.',
-      tag: 'Proyección a primera',
+      id: 'linea343',
+      board: 'linea343',
+      formation: '3-4-3', // pisa el 4-2-3-1 base en la leyenda de la pizarra
+      title: '3-4-3 en línea',
+      text: 'Variante de apoyo: línea de tres centrales, mediocampo plano de cuatro con carrileros y tridente ofensivo. Un plan alternativo para ganar amplitud y presencia en campo rival.',
+      tag: 'Variante de partido',
     },
   ],
 
@@ -102,7 +106,7 @@ export const coachData = {
       years: '2026 — Actualidad',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: null, // ⚠️ escudo_melgar.webp
+      logo: escudoMelgar, // ⚠️ escudo_melgar.webp
       shortName: 'MEL',
       record: { pj: 11, ppm: 1.64 },
       highlights: ['Proyecto 2026 – 2027', '5 triunfos en los primeros 9 partidos'],
@@ -113,7 +117,7 @@ export const coachData = {
       years: '2023 — 2026',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: null, // ⚠️ escudo_cusco.webp
+      logo: escudoCusco, // ⚠️ escudo_cusco.webp
       shortName: 'CUS',
       record: { pj: 80, ppm: 1.79 },
       highlights: [
@@ -128,7 +132,7 @@ export const coachData = {
       years: '2023',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: null, // ⚠️ escudo_emelec.webp
+      logo: escudoEmelec, // ⚠️ escudo_emelec.webp
       shortName: 'EME',
       record: { pj: 19, ppm: 1.16 },
       highlights: [],
@@ -161,7 +165,7 @@ export const coachData = {
       years: '2006 — 2017',
       role: 'Formador',
       stage: 'formativas',
-      logo: null, // ⚠️ escudo_velez.webp
+      logo: escudoVelez, // ⚠️ escudo_velez.webp
       shortName: 'VEL',
       record: null,
       highlights: ['Más de una década en el semillero de Vélez'],
@@ -212,10 +216,10 @@ export const coachData = {
     winRate: 49.7, // % de victorias en toda la carrera
     record: { wins: 75, draws: 32, losses: 44 },
     ppmByClub: [
-      { club: 'U. Católica', short: 'UCA', years: '2021–22', ppm: 1.69 },
-      { club: 'Emelec',      short: 'EME', years: '2023',    ppm: 1.16 },
-      { club: 'Cusco FC',    short: 'CUS', years: '2023–26', ppm: 1.79 },
-      { club: 'FBC Melgar',  short: 'MEL', years: '2026–',   ppm: 1.64 },
+      { club: 'U. Católica', short: 'UCA', years: '2021–22', ppm: 1.69, logo: escudoUcatolica },
+      { club: 'Emelec',      short: 'EME', years: '2023',    ppm: 1.16, logo: escudoEmelec },
+      { club: 'Cusco FC',    short: 'CUS', years: '2023–26', ppm: 1.79, logo: escudoCusco },
+      { club: 'FBC Melgar',  short: 'MEL', years: '2026–',   ppm: 1.64, logo: escudoMelgar },
     ],
     ppmMax: 3, // techo teórico (todas victorias) para escalar el gráfico
   },

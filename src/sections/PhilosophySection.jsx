@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react'
-import { Box, Grid, GridItem, Text, Flex, VStack } from '@chakra-ui/react'
-import { FaFutbol, FaUsers } from 'react-icons/fa'
-import { FiTarget, FiGrid } from 'react-icons/fi'
+import { Box, Grid, GridItem, Text, Flex, VStack, IconButton } from '@chakra-ui/react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { FaFutbol } from 'react-icons/fa'
+import { FiTarget, FiGrid, FiLayers, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import useScrubReveal from '../hooks/useScrubReveal'
 import { coachData } from '../data/coachData'
 import TacticalBoard from '../components/Tactical/TacticalBoard'
@@ -10,7 +11,7 @@ const CONCEPT_ICONS = {
   posesion:   FaFutbol,
   presion:    FiTarget,
   estructura: FiGrid,
-  formacion:  FaUsers,
+  linea343:   FiLayers,
 }
 
 function ConceptCard({ concept, isActive, onSelect }) {
@@ -54,32 +55,104 @@ function ConceptCard({ concept, isActive, onSelect }) {
   )
 }
 
-function ConceptChip({ concept, isActive, onSelect }) {
+const MotionFlex = motion(Flex)
+
+function ConceptSlider({ concepts, active, onChange }) {
+  const [dir, setDir] = useState(1)
+  const touchX = useRef(null)
+  const reduceMotion = useReducedMotion()
+  const concept = concepts[active]
   const Icon = CONCEPT_ICONS[concept.id] ?? FaFutbol
+
+  const go = (delta) => {
+    setDir(delta)
+    onChange((active + delta + concepts.length) % concepts.length)
+  }
+
   return (
-    <Flex
-      as="button"
-      type="button"
-      onClick={onSelect}
-      align="center"
-      gap={2}
-      flexShrink={0}
-      px={4}
-      py={2}
-      bg={isActive ? 'brand.doradoAlpha' : 'transparent'}
-      border="1px solid"
-      borderColor={isActive ? 'brand.dorado' : 'brand.linea'}
-      borderRadius="full"
-      transition="border-color 0.3s, background 0.3s"
-      aria-pressed={isActive}
-    >
-      <Box as={Icon} fontSize="14px" color={isActive ? 'brand.dorado' : 'brand.gray'}
-        transition="color 0.3s" />
-      <Text fontFamily="heading" fontSize="md" whiteSpace="nowrap" lineHeight={1}
-        color={isActive ? 'brand.bone' : 'brand.gray'} transition="color 0.3s">
-        {concept.title}
-      </Text>
-    </Flex>
+    <Box>
+      <Flex align="center" gap={1}>
+        <IconButton
+          aria-label="Concepto anterior"
+          icon={<FiChevronLeft />}
+          onClick={() => go(-1)}
+          variant="ghost"
+          isRound
+          fontSize="24px"
+          color="brand.gray"
+          _hover={{ color: 'brand.dorado', bg: 'transparent' }}
+          _active={{ bg: 'transparent' }}
+          flexShrink={0}
+        />
+        {/* Concepto activo centrado — cambia con flechas o deslizando */}
+        <Box
+          flex={1}
+          minW={0}
+          overflow="hidden"
+          onTouchStart={(e) => { touchX.current = e.touches[0].clientX }}
+          onTouchEnd={(e) => {
+            if (touchX.current === null) return
+            const dx = e.changedTouches[0].clientX - touchX.current
+            touchX.current = null
+            if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1)
+          }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <MotionFlex
+              key={concept.id}
+              initial={reduceMotion ? false : { x: dir * 48, opacity: 0 }}
+              animate={{ x: 0, opacity: 1, transition: { duration: 0.25, ease: 'easeOut' } }}
+              exit={reduceMotion ? undefined
+                : { x: dir * -48, opacity: 0, transition: { duration: 0.18, ease: 'easeIn' } }}
+              align="center"
+              justify="center"
+              gap={2}
+              px={3}
+              py={2}
+              bg="brand.doradoAlpha"
+              border="1px solid"
+              borderColor="brand.dorado"
+              borderRadius="full"
+            >
+              <Box as={Icon} fontSize="14px" color="brand.dorado" flexShrink={0} />
+              <Text fontFamily="heading" fontSize={{ base: 'sm', sm: 'md' }} whiteSpace="nowrap"
+                lineHeight={1} color="brand.bone">
+                {concept.title}
+              </Text>
+            </MotionFlex>
+          </AnimatePresence>
+        </Box>
+        <IconButton
+          aria-label="Concepto siguiente"
+          icon={<FiChevronRight />}
+          onClick={() => go(1)}
+          variant="ghost"
+          isRound
+          fontSize="24px"
+          color="brand.gray"
+          _hover={{ color: 'brand.dorado', bg: 'transparent' }}
+          _active={{ bg: 'transparent' }}
+          flexShrink={0}
+        />
+      </Flex>
+      {/* Indicador de posición */}
+      <Flex justify="center" gap={2} mt={3}>
+        {concepts.map((c, i) => (
+          <Box
+            key={c.id}
+            as="button"
+            type="button"
+            onClick={() => { setDir(i > active ? 1 : -1); onChange(i) }}
+            w={i === active ? '18px' : '6px'}
+            h="6px"
+            borderRadius="full"
+            bg={i === active ? 'brand.dorado' : 'brand.humo'}
+            transition="width 0.3s, background 0.3s"
+            aria-label={`Ver ${c.title}`}
+          />
+        ))}
+      </Flex>
+    </Box>
   )
 }
 
@@ -127,27 +200,11 @@ export function PhilosophySection() {
 
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={{ base: 5, lg: 0 }}
           alignItems="start">
-          {/* Selector: chips horizontales en mobile, cards en desktop.
-              minW=0 evita que el nowrap de los chips ensanche la columna */}
+          {/* Selector: slider con flechas en mobile, cards en desktop */}
           <GridItem order={{ base: 1, lg: 1 }} minW={0}>
-            <Flex
-              display={{ base: 'flex', lg: 'none' }}
-              gap={2}
-              overflowX="auto"
-              mx={-5}
-              px={5}
-              pb={1}
-              sx={{ scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}
-            >
-              {concepts.map((concept, i) => (
-                <ConceptChip
-                  key={concept.id}
-                  concept={concept}
-                  isActive={i === active}
-                  onSelect={() => setActive(i)}
-                />
-              ))}
-            </Flex>
+            <Box display={{ base: 'block', lg: 'none' }}>
+              <ConceptSlider concepts={concepts} active={active} onChange={setActive} />
+            </Box>
             <VStack display={{ base: 'none', lg: 'flex' }} spacing={3} align="stretch">
               {concepts.map((concept, i) => (
                 <ConceptCard
@@ -179,7 +236,7 @@ export function PhilosophySection() {
               </Box>
               <Flex align="center" gap={3}>
                 <Text fontFamily="heading" fontSize="2xl" color="brand.dorado" lineHeight={1}>
-                  {coachData.formation}
+                  {current.formation ?? coachData.formation}
                 </Text>
                 <Box w="1px" h="20px" bg="brand.linea" />
                 <Text fontFamily="mono" fontSize="11px" color="brand.gray"

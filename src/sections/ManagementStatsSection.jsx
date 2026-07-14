@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { Box, Grid, GridItem, Text, Flex, HStack } from '@chakra-ui/react'
+import { Box, Grid, GridItem, Text, Flex, HStack, Image, useToken } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useScrubReveal from '../hooks/useScrubReveal'
@@ -240,80 +240,124 @@ function RecordBar() {
   )
 }
 
-// ── Puntos por partido por club (barras verticales, base cero) ──
+// ── Puntos por partido por club (línea con puntos, escala 1.0 → 2.0) ──
+// El SVG usa un viewBox fijo; valores, escala y etiquetas de club son HTML
+// posicionado en % para que el texto no se achique con el ancho.
+// Cada club (escudo + sigla + años) va anclado bajo su propio punto.
 function PpmChart() {
-  const barRefs = useRef([])
-  const numRefs = useRef([])
+  const wrapRef   = useRef(null)
+  const lineRef   = useRef(null)
+  const dotRefs   = useRef([])
+  const numRefs   = useRef([])
+  const labelRefs = useRef([])
+  const [carbon, linea] = useToken('colors', ['brand.carbon', 'brand.linea'])
   const { ppmByClub } = coachData.managementStats
-  const SCALE_MAX = 2 // escala del eje (0 → 2 pts/partido); las barras nacen en cero
+
+  const W = 560, H = 240, PAD_L = 46, PAD_R = 28, TOP = 28, BASE = 200
+  const Y_MIN = 1, Y_MAX = 2
+  const ticks = [1, 1.2, 1.4, 1.6, 1.8, 2]
+  const xAt = (i) => PAD_L + ((W - PAD_L - PAD_R) / (ppmByClub.length - 1)) * i
+  const yAt = (v) => BASE - ((v - Y_MIN) / (Y_MAX - Y_MIN)) * (BASE - TOP)
+  const pts = ppmByClub.map((c, i) => ({ ...c, x: xAt(i), y: yAt(c.ppm) }))
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      ppmByClub.forEach((c, i) => {
-        const bar = barRefs.current[i]
-        const num = numRefs.current[i]
-        if (!bar) return
-        if (reduceMotion()) {
-          gsap.set(bar, { scaleY: 1 })
-          if (num) num.textContent = c.ppm.toFixed(2)
-          return
-        }
-        gsap.fromTo(bar,
-          { scaleY: 0 },
-          {
-            scaleY: 1, duration: 1, delay: i * 0.12, ease: 'power3.out',
-            scrollTrigger: { trigger: bar, start: 'top 90%', once: true },
-          }
-        )
-        const obj = { val: 0 }
-        gsap.to(obj, {
-          val: c.ppm, duration: 1, delay: i * 0.12, ease: 'power3.out',
-          scrollTrigger: { trigger: bar, start: 'top 90%', once: true },
-          onUpdate() { if (num) num.textContent = obj.val.toFixed(2) },
-        })
+      if (reduceMotion()) {
+        numRefs.current.forEach((el, i) => { if (el) el.textContent = pts[i].ppm.toFixed(2) })
+        return
+      }
+      const line = lineRef.current
+      const len  = line.getTotalLength()
+      gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
+      gsap.set(dotRefs.current, { scale: 0, transformOrigin: 'center' })
+      gsap.set(labelRefs.current, { opacity: 0, y: 6 })
+
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: wrapRef.current, start: 'top 88%', once: true },
       })
-    })
+      tl.to(line, { strokeDashoffset: 0, duration: 1.3, ease: 'power2.inOut' }, 0)
+      // Cada punto aparece cuando el trazo lo alcanza, con su club debajo
+      pts.forEach((p, i) => {
+        const at = (i / (pts.length - 1)) * 1.15
+        tl.to(dotRefs.current[i], { scale: 1, duration: 0.35, ease: 'back.out(2.5)' }, at)
+        tl.to(labelRefs.current[i], { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, at + 0.1)
+        const obj = { val: 0 }
+        tl.to(obj, {
+          val: p.ppm, duration: 0.6, ease: 'power2.out',
+          onUpdate() { if (numRefs.current[i]) numRefs.current[i].textContent = obj.val.toFixed(2) },
+        }, at)
+      })
+    }, wrapRef)
     return () => ctx.revert()
-  }, [ppmByClub])
+  }, [])
 
   return (
-    <Box role="img"
+    <Box ref={wrapRef} role="img"
       aria-label={`Puntos por partido por club: ${ppmByClub.map((c) => `${c.club} ${c.ppm}`).join(', ')}`}>
-      <Flex align="flex-end" justify="space-between" gap={{ base: 3, md: 6 }} h="190px">
-        {ppmByClub.map((c, i) => (
-          <Flex key={c.club} direction="column" align="center" justify="flex-end" flex={1} h="100%">
-            <Text ref={(el) => (numRefs.current[i] = el)}
-              fontFamily="heading" fontSize={{ base: 'lg', md: 'xl' }} color="brand.bone"
-              lineHeight={1} mb={2}>
-              0
+      <Box position="relative">
+        <Text position="absolute" top={0} left={0} fontFamily="mono" fontSize="9px"
+          color="brand.gray" textTransform="uppercase" letterSpacing="0.15em">
+          pts / pj
+        </Text>
+
+        <Box as="svg" viewBox={`0 0 ${W} ${H}`} w="100%" h="auto" display="block">
+          {/* Grilla horizontal (la línea base apenas más marcada) */}
+          {ticks.map((t) => (
+            <line key={t} x1={PAD_L} y1={yAt(t)} x2={W - PAD_R} y2={yAt(t)}
+              stroke={linea} strokeWidth="1" opacity={t === Y_MIN ? 0.55 : 0.4} />
+          ))}
+          {/* Serie */}
+          <path ref={lineRef} d={`M${pts.map((p) => `${p.x},${p.y}`).join(' L')}`}
+            fill="none" stroke={CHART.win} strokeWidth="2.5"
+            strokeLinejoin="round" strokeLinecap="round" />
+          {/* Puntos, con área de hover más grande que el marcador */}
+          {pts.map((p, i) => (
+            <g key={p.short}>
+              <circle ref={(el) => (dotRefs.current[i] = el)} cx={p.x} cy={p.y} r="5.5"
+                fill={CHART.win} stroke={carbon} strokeWidth="2" />
+              <circle cx={p.x} cy={p.y} r="14" fill="transparent">
+                <title>{`${p.club} · ${p.ppm.toFixed(2)} pts por partido`}</title>
+              </circle>
+            </g>
+          ))}
+        </Box>
+
+        {/* Valores sobre cada punto */}
+        {pts.map((p, i) => (
+          <Text key={p.short} ref={(el) => (numRefs.current[i] = el)}
+            position="absolute" left={`${(p.x / W) * 100}%`} top={`${(p.y / H) * 100}%`}
+            transform="translate(-50%, calc(-100% - 12px))"
+            fontFamily="heading" fontSize={{ base: 'md', md: 'lg' }}
+            color="brand.bone" lineHeight={1}>
+            0
+          </Text>
+        ))}
+        {/* Escala Y */}
+        {ticks.map((t) => (
+          <Text key={t} position="absolute" left={0} top={`${(yAt(t) / H) * 100}%`}
+            transform="translateY(-50%)" fontFamily="mono" fontSize="9px" color="brand.gray">
+            {t.toFixed(1)}
+          </Text>
+        ))}
+
+        {/* Clubes: escudo + sigla + años anclados bajo su punto */}
+        {pts.map((p, i) => (
+          <Flex key={p.short} ref={(el) => (labelRefs.current[i] = el)}
+            position="absolute" left={`${(p.x / W) * 100}%`} top={`${(p.y / H) * 100}%`}
+            transform="translateX(-50%)" mt="10px"
+            direction="column" align="center" gap={1} pointerEvents="none">
+            <Image src={p.logo} alt="" boxSize="20px" objectFit="contain" />
+            <Text fontFamily="mono" fontSize={{ base: '10px', md: '11px' }} color="brand.bone"
+              textTransform="uppercase" letterSpacing="0.12em" lineHeight={1}>
+              {p.short}
             </Text>
-            <Box
-              ref={(el) => (barRefs.current[i] = el)}
-              w="100%"
-              maxW="64px"
-              h={`${(c.ppm / SCALE_MAX) * 100}%`}
-              bg={CHART.win}
-              borderTopRadius="4px"
-              transformOrigin="bottom"
-              transform="scaleY(0)"
-            />
+            <Text fontFamily="mono" fontSize="9px" color="brand.gray" letterSpacing="0.08em"
+              lineHeight={1}>
+              {p.years}
+            </Text>
           </Flex>
         ))}
-      </Flex>
-      <Box h="1px" bg="brand.linea" mt="2px" />
-      <Flex justify="space-between" gap={{ base: 3, md: 6 }} mt={2}>
-        {ppmByClub.map((c) => (
-          <Box key={c.club} flex={1} textAlign="center">
-            <Text fontFamily="mono" fontSize={{ base: '10px', md: '11px' }} color="brand.bone"
-              textTransform="uppercase" letterSpacing="0.12em">
-              {c.short}
-            </Text>
-            <Text fontFamily="mono" fontSize="9px" color="brand.gray" letterSpacing="0.08em">
-              {c.years}
-            </Text>
-          </Box>
-        ))}
-      </Flex>
+      </Box>
     </Box>
   )
 }

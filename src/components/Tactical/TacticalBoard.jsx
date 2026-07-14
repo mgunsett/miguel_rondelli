@@ -7,18 +7,27 @@ gsap.registerPlugin(ScrollTrigger)
 
 // Posiciones base del 4-2-3-1 (cancha vertical, ataque hacia arriba).
 // pressY: posición adelantada en presión alta — cada línea queda por debajo de la anterior.
+// alt: posición en el 3-4-3 en línea — el 5 baja a la línea de tres, los laterales
+//      suben de carrileros y el 10 se integra al mediocampo plano de cuatro.
 const PLAYERS = [
-  { n: 1,  x: 180, y: 482 },               // GK (único que no presiona)
-  { n: 4,  x: 305, y: 402, pressY: 300 },  // RB
-  { n: 2,  x: 225, y: 414, pressY: 314 },  // CB
-  { n: 6,  x: 135, y: 414, pressY: 314 },  // CB
-  { n: 3,  x: 55,  y: 402, pressY: 300 },  // LB
-  { n: 5,  x: 230, y: 330, pressY: 246 },  // DM
-  { n: 8,  x: 130, y: 330, pressY: 246 },  // DM
-  { n: 7,  x: 300, y: 236, pressY: 146 },  // AM derecha
-  { n: 10, x: 180, y: 222, pressY: 188 },  // AM centro
-  { n: 11, x: 60,  y: 236, pressY: 146 },  // AM izquierda
-  { n: 9,  x: 180, y: 128, pressY: 96 },   // FW
+  { n: 1,  x: 180, y: 482,               alt: { x: 180, y: 482 } },  // GK
+  { n: 4,  x: 305, y: 402, pressY: 300,  alt: { x: 315, y: 310 } },  // RB → carrilero
+  { n: 2,  x: 225, y: 414, pressY: 314,  alt: { x: 270, y: 414 } },  // CB
+  { n: 6,  x: 135, y: 414, pressY: 314,  alt: { x: 90,  y: 414 } },  // CB
+  { n: 3,  x: 55,  y: 402, pressY: 300,  alt: { x: 45,  y: 310 } },  // LB → carrilero
+  { n: 5,  x: 230, y: 330, pressY: 246,  alt: { x: 180, y: 414 } },  // DM → líbero central
+  { n: 8,  x: 130, y: 330, pressY: 246,  alt: { x: 135, y: 310 } },  // DM
+  { n: 7,  x: 300, y: 236, pressY: 146,  alt: { x: 280, y: 150 } },  // AM derecha → extremo
+  { n: 10, x: 180, y: 222, pressY: 188,  alt: { x: 225, y: 310 } },  // AM centro → interior
+  { n: 11, x: 60,  y: 236, pressY: 146,  alt: { x: 80,  y: 150 } },  // AM izquierda → extremo
+  { n: 9,  x: 180, y: 128, pressY: 96,   alt: { x: 180, y: 150 } },  // FW
+]
+
+// Las tres líneas planas del 3-4-3
+const LINES_343 = [
+  'M90,414 L180,414 L270,414',
+  'M45,310 L135,310 L225,310 L315,310',
+  'M80,150 L180,150 L280,150',
 ]
 
 // Oleadas de presión (índices de PLAYERS): 9 → 11/7 → 10 → 8/5 → defensa
@@ -45,9 +54,10 @@ function PitchMarkings({ stroke }) {
 }
 
 export function TacticalBoard({ mode = 'estructura' }) {
-  const svgRef     = useRef(null)
-  const dotRefs    = useRef([])
-  const lineRefs   = useRef([])
+  const svgRef      = useRef(null)
+  const dotRefs     = useRef([])
+  const lineRefs    = useRef([])
+  const line343Refs = useRef([])
   const passRef    = useRef(null)
   const ballRef    = useRef(null)
   const zoneRef    = useRef(null)
@@ -67,7 +77,7 @@ export function TacticalBoard({ mode = 'estructura' }) {
         gsap.set(el.querySelector('circle'), { fill: rojo, stroke: dorado })
       })
       gsap.set([passRef.current, ballRef.current, zoneRef.current], { opacity: 0 })
-      gsap.set([...lineRefs.current, ...arrowRefs.current, ...ringRefs.current], { opacity: 0 })
+      gsap.set([...lineRefs.current, ...line343Refs.current, ...arrowRefs.current, ...ringRefs.current], { opacity: 0 })
 
       if (reduceMotion) {
         // Sin loops ni dibujado: estado final estático del modo activo
@@ -82,6 +92,10 @@ export function TacticalBoard({ mode = 'estructura' }) {
         if (mode === 'juveniles') {
           YOUTH_IDX.forEach((i) =>
             gsap.set(dotRefs.current[i]?.querySelector('circle'), { fill: dorado, stroke: bone }))
+        }
+        if (mode === 'linea343') {
+          dotRefs.current.forEach((el, i) => gsap.set(el, { x: PLAYERS[i].alt.x, y: PLAYERS[i].alt.y }))
+          gsap.set(line343Refs.current, { opacity: 0.5 })
         }
         return
       }
@@ -146,6 +160,22 @@ export function TacticalBoard({ mode = 'estructura' }) {
         })
       }
 
+      if (mode === 'linea343') {
+        // Morph del 4-2-3-1 base al 3-4-3: cada jugador viaja a su posición alternativa
+        tl.to(dotRefs.current, {
+          x: (i) => PLAYERS[i].alt.x,
+          y: (i) => PLAYERS[i].alt.y,
+          duration: 0.8,
+          ease: 'power2.inOut',
+          stagger: 0.04,
+        }, '-=0.1')
+        line343Refs.current.forEach((line) => {
+          const len = line.getTotalLength()
+          gsap.set(line, { strokeDasharray: len, strokeDashoffset: len, opacity: 0.6 })
+          tl.to(line, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, '-=0.25')
+        })
+      }
+
       if (mode === 'juveniles') {
         YOUTH_IDX.forEach((idx, k) => {
           const dot  = dotRefs.current[idx]
@@ -188,6 +218,12 @@ export function TacticalBoard({ mode = 'estructura' }) {
         'M60,236 L180,222 L300,236',
       ].map((d, i) => (
         <path key={d} ref={(el) => (lineRefs.current[i] = el)} d={d}
+          fill="none" stroke={dorado} strokeWidth="1.5" opacity="0" />
+      ))}
+
+      {/* Líneas planas del 3-4-3 (modo linea343) */}
+      {LINES_343.map((d, i) => (
+        <path key={d} ref={(el) => (line343Refs.current[i] = el)} d={d}
           fill="none" stroke={dorado} strokeWidth="1.5" opacity="0" />
       ))}
 
