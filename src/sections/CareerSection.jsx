@@ -131,23 +131,41 @@ function CareerNode({ club, isFirst, isLast, isActive }) {
             <Box w="1px" h="24px" bg="brand.linea" />
             <Box>
               <Text fontFamily="heading" fontSize="lg" color="brand.dorado" lineHeight={1}>
-                {club.record.ppm.toFixed(2)}
+                {club.record.pg}
               </Text>
               <Text fontFamily="mono" fontSize="8px" color="brand.gray"
                 textTransform="uppercase" letterSpacing="0.15em">
-                Pts / partido
+                PG
+              </Text>
+            </Box>
+            <Box>
+              <Text fontFamily="heading" fontSize="lg" color="brand.dorado" lineHeight={1}>
+                {club.record.pp}
+              </Text>
+              <Text fontFamily="mono" fontSize="8px" color="brand.gray"
+                textTransform="uppercase" letterSpacing="0.15em">
+                PP
+              </Text>
+            </Box>
+            <Box>
+              <Text fontFamily="heading" fontSize="lg" color="brand.dorado" lineHeight={1}>
+                {club.record.pe}
+              </Text>
+              <Text fontFamily="mono" fontSize="8px" color="brand.gray"
+                textTransform="uppercase" letterSpacing="0.15em">
+                PE
               </Text>
             </Box>
           </HStack>
         )}
 
         {club.highlights.length > 0 && (
-          <VStack spacing={1.5} mt={3}>
+          <VStack spacing={1.5} mt={3} alignItems="start" pt={3} borderTop="1px solid" borderColor="brand.linea">
             {club.highlights.map((h) => (
               <Text key={h} fontFamily="mono" fontSize="9px"
                 color={isFormativas ? 'brand.gray' : 'brand.doradoLight'}
                 letterSpacing="0.12em" lineHeight={1.5}>
-                {isFormativas ? h : `🏆 ${h}`}
+                {isFormativas ? h : `✔ ${h}`}
               </Text>
             ))}
           </VStack>

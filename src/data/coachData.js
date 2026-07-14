@@ -1,21 +1,16 @@
 import { FaInstagram } from 'react-icons/fa'
 import { IoMdStats } from 'react-icons/io'
 
-// ⚠️ FOTOS PLACEHOLDER — reemplazar por fotos reales del DT:
-//    coachHero  → foto de Rondelli en banca o dando indicaciones (recorte PNG/WebP)
+// Hero
 import coachHero from '@assets/polaco1.webp'
-
 import argentina from '@assets/argentina.webp'
-// Escudos disponibles (faltan: escudo_melgar / escudo_cusco / escudo_emelec / escudo_velez)
-// Al agregarlos en assets/escudos/, importarlos y completar el campo `logo` de cada club.
+// Escudos clubes
 import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
 import escudoMelgar from '@assets/escudo_melgar.webp'
 import escudoCusco from '@assets/escudos/escudo_cusco.webp'
 import escudoEmelec from '@assets/escudos/escudo_emelec.webp'
 import escudoVelez from '@assets/escudos/escudo_velez.webp'
-
-// ⚠️ GALERÍA PLACEHOLDER — reemplazar por fotos en banca, charlas técnicas,
-//    celebraciones de equipo y ruedas de prensa.
+// Gallery
 import image1 from '@assets/gallery/image1.webp'
 import image2 from '@assets/gallery/image2.webp'
 import image3 from '@assets/gallery/image3.webp'
@@ -23,9 +18,9 @@ import image4 from '@assets/gallery/image4.webp'
 import image5 from '@assets/gallery/image5.webp'
 import image6 from '@assets/gallery/image6.webp'
 import image7 from '@assets/gallery/image7.webp'
+import image8 from '@assets/gallery/image8.webp'
 import image9 from '@assets/gallery/image9.webp'
-
-// Logos de medios (placeholder — reemplazar por logos de Infobae / Depor / ESPN)
+// Logos de medios 
 import logo1 from '@assets/logos/logo1.webp'
 import logo2 from '@assets/logos/logo2.webp'
 import logo3 from '@assets/logos/logo3.webp'
@@ -53,10 +48,10 @@ export const coachData = {
   birthDate: '24 / 01 / 1978',
   birthPlace: 'Buenos Aires, Argentina',
   currentClub: 'FBC Melgar',
-  logoCurrentClub: escudoMelgar, // ⚠️ agregar assets/escudos/escudo_melgar.webp
+  logoCurrentClub: escudoMelgar,
   formation: '4-2-3-1',
   image: coachHero,
-  image2: image9, // ⚠️ placeholder — reemplazar por otra foto del DT
+  image2: image9,
 
   // Datos de impacto para el Hero
   impact: [
@@ -65,8 +60,7 @@ export const coachData = {
     { value: '4',    label: 'Clubes · 2 países' },
   ],
 
-  // ── Filosofía / Modelo de juego ──
-  // `board` define qué animación dibuja la pizarra táctica para cada concepto.
+  // Tácticas
   philosophy: [
     {
       id: 'posesion',
@@ -92,7 +86,7 @@ export const coachData = {
     {
       id: 'linea343',
       board: 'linea343',
-      formation: '3-4-3', // pisa el 4-2-3-1 base en la leyenda de la pizarra
+      formation: '3-4-3',
       title: '3-4-3 en línea',
       text: 'Variante de apoyo: línea de tres centrales, mediocampo plano de cuatro con carrileros y tridente ofensivo. Un plan alternativo para ganar amplitud y presencia en campo rival.',
       tag: 'Variante de partido',
@@ -100,7 +94,7 @@ export const coachData = {
   ],
 
   // ── Trayectoria como DT ──
-  // stage: 'primera' = fútbol profesional | 'formativas' = etapa de formador
+
   career: [
     {
       club: 'FBC Melgar',
@@ -108,9 +102,9 @@ export const coachData = {
       years: '2026 — Actualidad',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: escudoMelgar, // ⚠️ escudo_melgar.webp
+      logo: escudoMelgar,
       shortName: 'MEL',
-      record: { pj: 11, ppm: 1.64 },
+      record: { pj: 11, ppm: 1.64, pg: 5, pp: 3, pe: 3 },
       highlights: ['Proyecto 2026 – 2027', '5 triunfos en los primeros 9 partidos'],
     },
     {
@@ -119,9 +113,9 @@ export const coachData = {
       years: '2023 — 2026',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: escudoCusco, // ⚠️ escudo_cusco.webp
+      logo: escudoCusco,
       shortName: 'CUS',
-      record: { pj: 80, ppm: 1.79 },
+      record: { pj: 80, ppm: 1.79, pg: 41, pp: 19, pe: 20 },
       highlights: [
         'Subcampeón Liga 1 2025',
         'Clasificación a Copa Libertadores 2026',
@@ -134,9 +128,9 @@ export const coachData = {
       years: '2023',
       role: 'Director Técnico',
       stage: 'primera',
-      logo: escudoEmelec, // ⚠️ escudo_emelec.webp
+      logo: escudoEmelec,
       shortName: 'EME',
-      record: { pj: 19, ppm: 1.16 },
+      record: { pj: 19, ppm: 1.16, pg: 6, pp: 9, pe: 4 },
       highlights: [],
     },
     {
@@ -147,7 +141,7 @@ export const coachData = {
       stage: 'primera',
       logo: escudoUcatolica,
       shortName: 'UCA',
-      record: { pj: 45, ppm: 1.69 },
+      record: { pj: 45, ppm: 1.69, pg: 22, pp: 13, pe: 10 },
       highlights: ['Debut como DT en primera división'],
     },
     {
@@ -167,7 +161,7 @@ export const coachData = {
       years: '2006 — 2017',
       role: 'Formador',
       stage: 'formativas',
-      logo: escudoVelez, // ⚠️ escudo_velez.webp
+      logo: escudoVelez,
       shortName: 'VEL',
       record: null,
       highlights: ['Más de una década en el semillero de Vélez'],
@@ -203,20 +197,20 @@ export const coachData = {
       title: 'Formador de futbolistas',
       club: 'Vélez Sarsfield',
       year: '2006 – 2017',
-      detail: 'Más de una década desarrollando juveniles en una de las canteras top de Sudamérica.',
+      detail: 'Desarrollo de futbolistas en las divisiones juveniles con énfasis en formación integral.',
     },
   ],
 
   // ── Estadísticas de gestión (Transfermarkt / BeSoccer, jul 2026) ──
   managementStats: {
     kpis: [
-      { label: 'Partidos dirigidos', value: 151 },
+      { label: 'Partidos dirigidos', value: 155 },
       { label: 'Victorias',          value: 75 },
       { label: 'Puntos por partido', value: 1.7, decimals: 1 },
       { label: 'Goles a favor / PJ', value: 1.8, decimals: 1 },
     ],
-    winRate: 49.7, // % de victorias en toda la carrera
-    record: { wins: 75, draws: 32, losses: 44 },
+    winRate: 55.7, // % de victorias en toda la carrera
+    record: { wins: 75, draws: 34, losses: 46 }, // victorias, empates y derrotas
     ppmByClub: [
       { club: 'U. Católica', short: 'UCA', years: '2021–22', ppm: 1.69, logo: escudoUcatolica },
       { club: 'Emelec',      short: 'EME', years: '2023',    ppm: 1.16, logo: escudoEmelec },
@@ -282,6 +276,8 @@ export const coachData = {
     { id: 5, src: image5, alt: 'Miguel Rondelli', caption: 'Plantel 2026',                category: 'Equipo',       aspect: 'wide' },
     { id: 6, src: image6, alt: 'Miguel Rondelli', caption: 'Rueda de prensa',             category: 'Prensa',       aspect: 'tall' },
     { id: 7, src: image7, alt: 'Miguel Rondelli', caption: 'Charla técnica pre-partido',  category: 'Charla',       aspect: 'wide' },
+    { id: 8, src: image8, alt: 'Miguel Rondelli', caption: 'Análisis de video',            category: 'Analisis',     aspect: 'tall' },
+    { id: 9, src: image9, alt: 'Miguel Rondelli', caption: 'Concentración del plantel',    category: 'Concentración', aspect: 'wide' },
   ],
 
   socialMedia: [

@@ -194,7 +194,7 @@ export function PhilosophySection() {
           </Text>
           <Text as="h2" fontFamily="heading" fontSize={{ base: '5xl', lg: '6xl' }}
             color="brand.dorado" lineHeight={1}>
-            Filosofía
+            Tácticas
           </Text>
         </Box>
 

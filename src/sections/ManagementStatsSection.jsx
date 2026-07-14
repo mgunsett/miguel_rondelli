@@ -151,7 +151,7 @@ function WinRateRing() {
           </HStack>
           <Text fontFamily="mono" fontSize="9px" color="brand.gray"
             textTransform="uppercase" letterSpacing="0.2em">
-            de victorias
+            Rendimiento
           </Text>
         </Flex>
       </Box>

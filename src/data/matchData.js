@@ -10,7 +10,7 @@ export function docToMatch(data) {
   }
 }
 
-// ⚠️ PLACEHOLDER — los partidos reales se cargan desde /admin (Firestore)
+
 export const defaultMatches = {
   last: {
     home:      { name: 'FBC Melgar', shield: null },
