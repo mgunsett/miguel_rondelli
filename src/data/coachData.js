@@ -74,7 +74,7 @@ export const coachData = {
       id: 'presion',
       board: 'presion',
       title: 'Presión alta coordinada',
-      text: 'Recuperación inmediata tras pérdida y bloque adelantado. La defensa se apoya lejos del arco propio: promedio de menos de un gol en contra por partido en sus ciclos en Perú.',
+      text: 'Recuperación inmediata tras pérdida y bloque adelantado. La defensa se apoya lejos del arco propio: promedio de menos de un gol en contra por partido.',
       tag: 'Recuperar arriba',
     },
     {

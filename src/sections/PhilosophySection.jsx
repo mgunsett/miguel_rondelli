@@ -54,6 +54,35 @@ function ConceptCard({ concept, isActive, onSelect }) {
   )
 }
 
+function ConceptChip({ concept, isActive, onSelect }) {
+  const Icon = CONCEPT_ICONS[concept.id] ?? FaFutbol
+  return (
+    <Flex
+      as="button"
+      type="button"
+      onClick={onSelect}
+      align="center"
+      gap={2}
+      flexShrink={0}
+      px={4}
+      py={2}
+      bg={isActive ? 'brand.doradoAlpha' : 'transparent'}
+      border="1px solid"
+      borderColor={isActive ? 'brand.dorado' : 'brand.linea'}
+      borderRadius="full"
+      transition="border-color 0.3s, background 0.3s"
+      aria-pressed={isActive}
+    >
+      <Box as={Icon} fontSize="14px" color={isActive ? 'brand.dorado' : 'brand.gray'}
+        transition="color 0.3s" />
+      <Text fontFamily="heading" fontSize="md" whiteSpace="nowrap" lineHeight={1}
+        color={isActive ? 'brand.bone' : 'brand.gray'} transition="color 0.3s">
+        {concept.title}
+      </Text>
+    </Flex>
+  )
+}
+
 export function PhilosophySection() {
   const [active, setActive] = useState(0)
   const sectionRef = useRef(null)
@@ -96,11 +125,30 @@ export function PhilosophySection() {
           </Text>
         </Box>
 
-        <Grid templateColumns={{ base: '1fr', lg: '1.1fr 1fr' }} gap={{ base: 10, lg: 16 }}
-          alignItems="center">
-          {/* Conceptos */}
-          <GridItem order={{ base: 2, lg: 1 }}>
-            <VStack spacing={3} align="stretch">
+        <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={{ base: 5, lg: 0 }}
+          alignItems="start">
+          {/* Selector: chips horizontales en mobile, cards en desktop.
+              minW=0 evita que el nowrap de los chips ensanche la columna */}
+          <GridItem order={{ base: 1, lg: 1 }} minW={0}>
+            <Flex
+              display={{ base: 'flex', lg: 'none' }}
+              gap={2}
+              overflowX="auto"
+              mx={-5}
+              px={5}
+              pb={1}
+              sx={{ scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}
+            >
+              {concepts.map((concept, i) => (
+                <ConceptChip
+                  key={concept.id}
+                  concept={concept}
+                  isActive={i === active}
+                  onSelect={() => setActive(i)}
+                />
+              ))}
+            </Flex>
+            <VStack display={{ base: 'none', lg: 'flex' }} spacing={3} align="stretch">
               {concepts.map((concept, i) => (
                 <ConceptCard
                   key={concept.id}
@@ -113,22 +161,19 @@ export function PhilosophySection() {
           </GridItem>
 
           {/* Pizarra táctica */}
-          <GridItem order={{ base: 1, lg: 2 }}>
+          <GridItem order={{ base: 2, lg: 2 }} minW={0}>
             <Flex ref={boardRef} direction="column" align="center" gap={4}>
               <Box
-                w="100%"
+                w={{ base: '78%', md: '60%' }}
                 display="flex"
                 justifyContent="center"
                 bg="brand.carbon"
                 border="1px solid"
                 borderColor="brand.linea"
                 borderRadius="16px"
-                p={{ base: 4, md: 6 }}
+                p={{ base: 4, md: 2 }}
                 position="relative"
-                _before={{
-                  content: '""', position: 'absolute', top: 0, left: 6,
-                  w: '48px', h: '2px', bg: 'brand.rojo',
-                }}
+                
               >
                 <TacticalBoard mode={current.board} />
               </Box>
@@ -142,6 +187,19 @@ export function PhilosophySection() {
                   {current.tag}
                 </Text>
               </Flex>
+              {/* Descripción del concepto activo (en desktop vive dentro de la card) */}
+              <Text
+                key={current.id}
+                display={{ base: 'block', lg: 'none' }}
+                fontFamily="body"
+                fontSize="sm"
+                color="brand.gray"
+                lineHeight={1.7}
+                textAlign="center"
+                maxW="420px"
+              >
+                {current.text}
+              </Text>
             </Flex>
           </GridItem>
         </Grid>
