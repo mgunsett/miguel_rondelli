@@ -23,6 +23,7 @@ import image4 from '@assets/gallery/image4.webp'
 import image5 from '@assets/gallery/image5.webp'
 import image6 from '@assets/gallery/image6.webp'
 import image7 from '@assets/gallery/image7.webp'
+import image9 from '@assets/gallery/image9.webp'
 
 // Logos de medios (placeholder — reemplazar por logos de Infobae / Depor / ESPN)
 import logo1 from '@assets/logos/logo1.webp'
@@ -55,11 +56,12 @@ export const coachData = {
   logoCurrentClub: escudoMelgar, // ⚠️ agregar assets/escudos/escudo_melgar.webp
   formation: '4-2-3-1',
   image: coachHero,
+  image2: image9, // ⚠️ placeholder — reemplazar por otra foto del DT
 
   // Datos de impacto para el Hero
   impact: [
     { value: '+150', label: 'Partidos dirigidos' },
-    { value: '2025', label: 'Subcampeón Liga 1' },
+    { value: '75', label: 'Ganados' },
     { value: '4',    label: 'Clubes · 2 países' },
   ],
 

@@ -24,7 +24,7 @@ function CoachPanel() {
         <Text
           className="player-number"
           fontFamily="heading"
-          fontSize={{ base: '120px', md: '100px' }}
+          fontSize={{ base: '110px', md: '100px' }}
           ml={{ base: '-10px', md: 0 }}
           lineHeight={0.9}
           color="transparent"
@@ -144,7 +144,8 @@ export default function Hero() {
           '@supports (height: 100dvh)': { height: '100dvh' },
         }}
       >
-        {/* Foto de fondo — fundida con el fondo */}
+        {/* Foto de fondo — en base la imagen mide el 100% real del contenedor
+            (que ya es dvh-aware) para que no se recorte contra la barra del navegador */}
         <Box
           position="absolute"
           inset={0}
@@ -152,14 +153,18 @@ export default function Hero() {
           pointerEvents="none"
           display="flex"
           justifyContent="center"
-          alignItems={{ base: 'flex-end', md: 'flex-start' }}
-          mt={{ base: 10, md: 12 }}
+          alignItems={{ base: 'center', md: 'flex-start' }}
+          mt={{ base: '60px', md: 12 }}
           ml={{ base: '0%', md: '4%' }}
           sx={{
-            maskImage:
-              'radial-gradient(120% 90% at 50% 30%, black 35%, transparent 78%)',
-            WebkitMaskImage:
-              'radial-gradient(120% 90% at 50% 30%, black 35%, transparent 78%)',
+            maskImage: {
+              base: 'radial-gradient(120% 95% at 50% 45%, black 40%, transparent 82%)',
+              md: 'radial-gradient(120% 90% at 50% 30%, black 35%, transparent 78%)',
+            },
+            WebkitMaskImage: {
+              base: 'radial-gradient(120% 95% at 50% 45%, black 40%, transparent 82%)',
+              md: 'radial-gradient(120% 90% at 50% 30%, black 35%, transparent 78%)',
+            },
           }}
         >
           <Image
@@ -167,8 +172,8 @@ export default function Hero() {
             alt=""
             aria-hidden="true"
             draggable={false}
-            w={{ base: '100vw', md: '62vw' }}
-            h={{ base: '100vh', md: 'auto' }}
+            w={{ base: '100%', md: '62vw' }}
+            h={{ base: '100%', md: 'auto' }}
             objectFit={{ base: 'cover', md: 'contain' }}
             objectPosition={{ base: 'center', md: 'center top' }}
             opacity={{ base: 0.21, lg: 0.20 }}
@@ -177,7 +182,7 @@ export default function Hero() {
           />
         </Box>
 
-        {/* Foto del DT — ⚠️ reemplazar por foto en banca / dando indicaciones */}
+        {/* Foto Principal */}
         <Box
           position="absolute"
           inset={0}
@@ -199,7 +204,7 @@ export default function Hero() {
               src={coachData.image}
               alt={`${coachData.displayName}, director técnico de ${coachData.currentClub}`}
               h={{ base: '90%', lg: '100%' }}
-              w={{ base: '58vw', lg: '30vw' }}
+              w={{ base: '70vw', lg: '30vw' }}
               objectFit="contain"
               objectPosition="bottom center"
               draggable={false}
@@ -209,6 +214,7 @@ export default function Hero() {
 
         {/* Nombre gigante */}
         <Box
+          className='player-name-giant'
           position="absolute"
           inset={0}
           zIndex={2}
@@ -219,7 +225,7 @@ export default function Hero() {
           justifyContent={{ base: 'flex-start', md: 'center' }}
           pl={{ base: 0, lg: '15%' }}
           pt={{ base: '22%', lg: '0%' }}
-          mt={{ base: '0', lg: '-4%' }}
+          mt={{ base: '5%', lg: '-4%' }}
         >
           <Flex direction="column" as="h1" overflow="hidden">
             <Text
@@ -240,7 +246,7 @@ export default function Hero() {
               as="span"
               display="block"
               fontFamily="heading"
-              fontSize={{ base: '26vw', md: '16vw', lg: '13vw' }}
+              fontSize={{ base: '34vw', md: '16vw', lg: '13vw' }}
               color="brand.dorado"
               lineHeight={0.9}
               style={{ opacity: 0 }}
@@ -255,7 +261,7 @@ export default function Hero() {
         <Box
           className="player-info"
           position="absolute"
-          bottom={{ base: '37%', lg: '16%' }}
+          bottom={{ base: '20%', lg: '16%' }}
           left={{ base: '5%', lg: '39%' }}
           zIndex={15}
         >

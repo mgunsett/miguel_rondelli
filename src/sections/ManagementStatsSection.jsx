@@ -253,7 +253,7 @@ function PpmChart() {
   const [carbon, linea] = useToken('colors', ['brand.carbon', 'brand.linea'])
   const { ppmByClub } = coachData.managementStats
 
-  const W = 560, H = 240, PAD_L = 46, PAD_R = 28, TOP = 28, BASE = 200
+  const W = 560, H = 190, PAD_L = 46, PAD_R = 28, TOP = 26, BASE = 162
   const Y_MIN = 1, Y_MAX = 2
   const ticks = [1, 1.2, 1.4, 1.6, 1.8, 2]
   const xAt = (i) => PAD_L + ((W - PAD_L - PAD_R) / (ppmByClub.length - 1)) * i
@@ -292,7 +292,7 @@ function PpmChart() {
   }, [])
 
   return (
-    <Box ref={wrapRef} role="img"
+    <Box ref={wrapRef} role="img" pb={{ base: 8, md: 0 }}
       aria-label={`Puntos por partido por club: ${ppmByClub.map((c) => `${c.club} ${c.ppm}`).join(', ')}`}>
       <Box position="relative">
         <Text position="absolute" top={0} left={0} fontFamily="mono" fontSize="9px"
@@ -396,9 +396,25 @@ export function ManagementStatsSection() {
         <KpiTiles />
 
         <Grid templateColumns={{ base: '1fr', lg: '380px 1fr' }} gap={5} mt={5}>
-          <GridItem {...statCard()}>
-            <Kicker>Efectividad</Kicker>
-            <WinRateRing />
+          <GridItem {...statCard()} overflow="hidden">
+            {/* Foto del DT como fondo difuminado de toda la card */}
+            <Image
+              src={coachData.image2}
+              alt=""
+              aria-hidden="true"
+              position="absolute"
+              inset={0}
+              w="100%"
+              h="100%"
+              objectFit="cover"
+              opacity={{ base: 0.21, lg: 0.20 }}
+              filter="grayscale(100%) contrast(1.05)"
+              sx={{ mixBlendMode: 'luminosity' }}
+            />
+            <Box position="relative">
+              <Kicker>Efectividad</Kicker>
+              <WinRateRing />
+            </Box>
           </GridItem>
           <GridItem>
             <Flex direction="column" gap={5} h="100%">
