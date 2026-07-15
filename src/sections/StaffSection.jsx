@@ -44,6 +44,7 @@ function StaffCard({ member, index }) {
       border="1px solid"
       borderColor="brand.linea"
       borderRadius="14px"
+      mt={14}
       p={{ base: 5, md: 7 }}
       textAlign="center"
       transition="border-color 0.35s, transform 0.35s, background 0.35s"
@@ -53,28 +54,48 @@ function StaffCard({ member, index }) {
         bg: 'brand.doradoAlpha',
       }}
     >
-      <Flex
-        boxSize="86px"
+      <Box
+        position="relative"
+        boxSize={{ base: '104px', md: '124px' }}
         mx="auto"
-        borderRadius="full"
-        overflow="hidden"
-        align="center"
-        justify="center"
-        bg="brand.negro"
-        border="2px solid"
-        borderColor="brand.dorado"
-        transition="box-shadow 0.35s"
-        _groupHover={{ boxShadow: '0 0 0 4px rgba(217,182,39,0.25)' }}
+        mt={{ base: -14, md: -16 }}
       >
-        {member.photo ? (
-          <Image src={member.photo} alt={`${member.name}, ${member.role}`}
-            boxSize="100%" objectFit="cover" loading="lazy" />
-        ) : (
-          <Text fontFamily="heading" fontSize="2xl" color="brand.dorado" lineHeight={1}>
-            {getInitials(member.role)}
-          </Text>
+        <Flex
+          position="absolute"
+          inset={0}
+          align="center"
+          justify="center"
+          borderRadius="full"
+          bg="brand.negro"
+          border="2px solid"
+          borderColor="brand.dorado"
+          boxShadow="0 8px 20px rgba(0,0,0,0.55)"
+          transition="box-shadow 0.35s"
+          _groupHover={{ boxShadow: '0 8px 20px rgba(0,0,0,0.55), 0 0 0 4px rgba(217,182,39,0.25)' }}
+        >
+          {!member.photo && (
+            <Text fontFamily="heading" fontSize="2xl" color="brand.dorado" lineHeight={1}>
+              {getInitials(member.role)}
+            </Text>
+          )}
+        </Flex>
+        {member.photo && (
+          <Image
+            src={member.photo}
+            alt={`${member.name}, ${member.role}`}
+            position="absolute"
+            bottom="2px"
+            left="50%"
+            transform="translateX(-50%)"
+            w="calc(100% - 4px)"
+            h="114%"
+            objectFit="cover"
+            objectPosition="top"
+            borderBottomRadius="full"
+            loading="lazy"
+          />
         )}
-      </Flex>
+      </Box>
 
       <Text fontFamily="mono" fontSize="10px" color="brand.rojoLight"
         textTransform="uppercase" letterSpacing="0.22em" mt={5}>
@@ -121,7 +142,7 @@ export function StaffSection() {
           </Text>
         </Box>
 
-        <Grid templateColumns={{ base: '1fr', sm: 'repeat(3, 1fr)' }} gap={5}>
+        <Grid templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(5, 1fr)' }} gap={5}>
           {coachData.staff.map((member, i) => (
             <StaffCard key={member.role} member={member} index={i} />
           ))}

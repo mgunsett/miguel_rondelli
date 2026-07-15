@@ -112,7 +112,7 @@ function CareerNode({ club, isFirst, isLast, isActive }) {
         </Text>
         <Text fontFamily="mono" fontSize="10px" color="brand.gray"
           textTransform="uppercase" letterSpacing="0.18em" mt={1}>
-          {club.country} · {club.role}
+          {club.country} 
         </Text>
 
         {/* Récord del ciclo (solo primera división) */}
@@ -243,11 +243,11 @@ export function CareerSection() {
           <Box ref={titleRef}>
             <Text fontFamily="mono" fontSize="10px" color="brand.boneWarm"
               textTransform="uppercase" letterSpacing="widest">
-              Del semillero de Vélez a la Libertadores
+              Trayectoria
             </Text>
             <Text as="h2" fontFamily="heading" fontSize={{ base: '5xl', lg: '6xl' }}
               color="brand.dorado" lineHeight={1}>
-              Trayectoria
+              Clubes
             </Text>
           </Box>
           <HStack spacing={2}>

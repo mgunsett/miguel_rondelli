@@ -8,9 +8,9 @@ const MotionBox = motion(Box)
 
 const navLinks = [
   { label: 'Home', href: '#hero'},
-  { label: 'Filosofía',    href: '#filosofia' },
+  { label: 'Tácticas',    href: '#filosofia' },
   { label: 'Trayectoria',  href: '#trayectoria' },
-  { label: 'Palmarés',     href: '#palmares' },
+  { label: 'Logros',     href: '#palmares' },
   { label: 'Estadísticas', href: '#estadisticas' },
   { label: 'Prensa',       href: '#prensa' },
   { label: 'Galería',      href: '#galeria' },

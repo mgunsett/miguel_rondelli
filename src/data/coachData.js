@@ -17,8 +17,6 @@ import image3 from '@assets/gallery/image3.webp'
 import image4 from '@assets/gallery/image4.webp'
 import image5 from '@assets/gallery/image5.webp'
 import image6 from '@assets/gallery/image6.webp'
-import image7 from '@assets/gallery/image7.webp'
-import image8 from '@assets/gallery/image8.webp'
 import image9 from '@assets/gallery/image9.webp'
 // Logos de medios 
 import logo1 from '@assets/logos/logo1.webp'
@@ -29,6 +27,12 @@ import logo3 from '@assets/logos/logo3.webp'
 import transfermkt from '@assets/contact2.svg'
 import ledsports from '@assets/contact3.webp'
 import moon from '@assets/contact4.webp'
+// Ayudantes
+import asistente1 from '@assets/ayudantes/luciano_precone.webp'
+import asistente2 from '@assets/ayudantes/gustavo_cordoba.webp'
+import asistente3 from '@assets/ayudantes/guido_thompson.webp'
+import asistente4 from '@assets/ayudantes/juan_esterilla.webp' 
+import asistente5 from '@assets/ayudantes/miguel_cevallos.webp'
 
 const name = 'MIGUEL'
 const fullName = 'RONDELLI'
@@ -224,46 +228,58 @@ export const coachData = {
   staff: [
     {
       role: 'Asistente Técnico',
-      name: 'A confirmar',
-      photo: null,
-      detail: 'Mano derecha en campo: dirige tareas tácticas y análisis del rival.',
+      name: 'Luciano Precone',
+      photo: asistente1,
+      detail: 'Ayuda directa en dirigir tareas tácticas y sistema de juego.',
+    },
+    {
+      role: 'Segundo Asistente',
+      name: 'Gustavo Córdoba',
+      photo: asistente2,
+      detail: 'Apoyo en entrenamientos y coordinación de logística del plantel.',
     },
     {
       role: 'Preparador Físico',
-      name: 'A confirmar',
-      photo: null,
+      name: 'Guido Thompson',
+      photo: asistente3,
       detail: 'Cargas, prevención de lesiones y puesta a punto del plantel.',
     },
     {
+      role: 'Preparador de Arqueros',
+      name: 'Juan Esterilla',
+      photo: asistente4,
+      detail: 'Entrenador físico y técnico de arqueros.',
+    },
+    {
       role: 'Analista de Video',
-      name: 'A confirmar',
-      photo: null,
-      detail: 'Scouting, informes de rivales y métricas de rendimiento.',
+      name: 'Miguel Cevallos',
+      photo: asistente5,
+      detail: 'Análisis de tácticas y preparación de informes de video.',
     },
   ],
 
   // ── Prensa / Testimonios (artículos reales) ──
   press: [
     {
+      media: 'ESPN',
+      logo: logo1, // ⚠️ reemplazar por logo de ESPN
+      title: 'Cusco FC anunció la continuidad de Miguel Rondelli: el proyecto que lo llevó a dirigir Copa Libertadores',
+      date: 'Diciembre 2025',
+      url: 'https://www.espn.com.ar/futbol/peru/nota/_/id/16018807/cusco-fc-continuidad-del-miguel-rondelli-2028-liga1',
+    },
+    {
       media: 'Infobae',
-      logo: logo1, // ⚠️ reemplazar por logo de Infobae
+      logo: logo2, // ⚠️ reemplazar por logo de Infobae
       title: 'Miguel Rondelli reivindica a Cusco FC tras gran 2025 pese al título de Universitario: “Fuimos el equipo que mejor jugó”',
       date: 'Diciembre 2025',
       url: 'https://www.infobae.com/peru/deportes/2025/12/15/miguel-rondelli-reivindica-a-cusco-fc-tras-gran-2025-pese-al-titulo-de-universitario-fuimos-el-equipo-que-mejor-jugo/',
     },
     {
       media: 'Fútbol Peruano',
-      logo: logo2, // ⚠️ reemplazar por logo de Fútbol Peruano
+      logo: logo3, // ⚠️ reemplazar por logo de Fútbol Peruano
       title: '“El campeón fue Universitario, pero el que mejor jugó fue Cusco”: el subcampeonato con sello de Rondelli',
       date: 'Diciembre 2025',
       url: 'https://www.futbolperuano.com/liga-1/noticias/miguel-rondelli-estalla-tras-el-subcampeonato-de-cusco-fc-el-campeon-fue-universitario-pero-el-que-mejor-jugo-fue-cusco-555257',
-    },
-    {
-      media: 'ESPN',
-      logo: logo3, // ⚠️ reemplazar por logo de ESPN
-      title: 'Cusco FC anunció la continuidad de Miguel Rondelli: el proyecto que lo llevó a dirigir Copa Libertadores',
-      date: 'Diciembre 2025',
-      url: 'https://www.espn.com.ar/futbol/peru/nota/_/id/16018807/cusco-fc-continuidad-del-miguel-rondelli-2028-liga1',
     },
   ],
 
@@ -275,9 +291,7 @@ export const coachData = {
     { id: 4, src: image4, alt: 'Miguel Rondelli', caption: 'Festejo con el equipo',       category: 'Festejo',      aspect: 'wide' },
     { id: 5, src: image5, alt: 'Miguel Rondelli', caption: 'Plantel 2026',                category: 'Equipo',       aspect: 'wide' },
     { id: 6, src: image6, alt: 'Miguel Rondelli', caption: 'Rueda de prensa',             category: 'Prensa',       aspect: 'tall' },
-    { id: 7, src: image7, alt: 'Miguel Rondelli', caption: 'Charla técnica pre-partido',  category: 'Charla',       aspect: 'wide' },
-    { id: 8, src: image8, alt: 'Miguel Rondelli', caption: 'Análisis de video',            category: 'Analisis',     aspect: 'tall' },
-    { id: 9, src: image9, alt: 'Miguel Rondelli', caption: 'Concentración del plantel',    category: 'Concentración', aspect: 'wide' },
+    { id: 7, src: image9, alt: 'Miguel Rondelli', caption: 'Charla técnica pre-partido',  category: 'Charla',       aspect: 'wide' },
   ],
 
   socialMedia: [
@@ -294,9 +308,9 @@ export const coachData = {
       label: 'TransferMarkt',
       image: transfermkt,
       iconBg: IoMdStats,
-      handle: 'Perfil de entrenador',
+      handle: '/miguel-rondelli',
       url: 'https://www.transfermarkt.com.ar/miguel-rondelli/profil/trainer/97916',
-      hoverColor: 'brand.rojoLight',
+      hoverColor: '#4899e5',
     },
   ],
 

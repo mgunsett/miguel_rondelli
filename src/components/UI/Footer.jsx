@@ -80,7 +80,7 @@ export default function Footer() {
           color="brand.bone"
           textAlign="center"
         >
-          © 2026 {coachData.displayName} · Director Técnico · Todos los derechos reservados
+          © 2026 {coachData.displayName} · DT · Todos los derechos reservados
         </Text>
 
         <Text fontSize="12px" color="brand.bone" letterSpacing="0.05em">

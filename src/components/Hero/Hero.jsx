@@ -273,7 +273,7 @@ export default function Hero() {
           position="absolute"
           bottom="12%"
           right={0}
-          top={{ base: 'auto', lg: '20%' }}
+          top={{ base: 'auto', lg: '60%' }}
           zIndex={10}
           display={{ base: 'none', lg: 'block' }}
         >

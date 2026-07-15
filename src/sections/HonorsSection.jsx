@@ -124,11 +124,11 @@ export function HonorsSection() {
         <Box ref={titleRef} mb={{ base: 8, lg: 10 }}>
           <Text fontFamily="mono" fontSize="10px" color="brand.boneWarm"
             textTransform="uppercase" letterSpacing="widest">
-            Logros a nivel club
+            Destacados
           </Text>
           <Text as="h2" fontFamily="heading" fontSize={{ base: '5xl', lg: '6xl' }}
             color="brand.dorado" lineHeight={1}>
-            Palmarés
+            Logros
           </Text>
         </Box>
 
